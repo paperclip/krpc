@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using KRPC;
+using KRPC.Utils;
 
 namespace TestServer
 {
@@ -8,6 +9,7 @@ namespace TestServer
     {
         public static void Main (string[] args)
         {
+            KRPC.Utils.Logger.ShouldLogToUnity = false;
             var server = new KRPCServer (IPAddress.Loopback, ushort.Parse (args [0]));
             var timeSpan = new TimeSpan ();
             server.GetUniversalTime = () => timeSpan.TotalSeconds;
