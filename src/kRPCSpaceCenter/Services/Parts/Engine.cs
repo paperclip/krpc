@@ -151,7 +151,39 @@ namespace KRPCSpaceCenter.Services.Parts
 
         [KRPCProperty]
         public bool HasFuel {
-            get { return !(engine != null ? engine.flameout : engineFx.flameout); }
+            get {
+                var resourceLibrary = PartResourceLibrary.Instance;
+                var requiredResources = new HashSet<string> (Propellants);
+
+                foreach (var r in requiredResources) {
+                    Console.WriteLine (r + " = " + resourceLibrary.GetDefinition (r).resourceFlowMode);
+                }
+
+                // Check for resources that are avaiable anywhere on the vessel
+                var resources = requiredResources.Select (x => resourceLibrary.GetDefinition (x)).ToList ();
+                foreach (var resource in resources) {
+                    if (resource.resourceFlowMode == global::ResourceFlowMode.ALL_VESSEL && part.Vessel.Resources.HasResource (resource.name))
+                        requiredResources.Remove (resource.name);
+                    if (requiredResources.Count == 0)
+                        return true;
+                }
+
+                // Check for resources in fuel-flow connected parts
+                var enginePart = (engine != null ? engine.part : engineFx.part);
+                foreach (var part in enginePart.FuelFlowConnectedParts()) {
+                    Console.Out.WriteLine ("Examining part " + new Part (part).Title);
+                    foreach (PartResource partResource in part.Resources) {
+                        if (partResource.amount > 0f) {
+                            Console.Out.WriteLine ("Found " + partResource.resourceName + " in " + new Part (part).Title);
+                            requiredResources.Remove (partResource.resourceName);
+                        }
+                    }
+                    if (requiredResources.Count == 0)
+                        return true;
+                }
+
+                return false;
+            }
         }
 
         [KRPCProperty]
