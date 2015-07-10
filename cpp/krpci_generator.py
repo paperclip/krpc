@@ -144,11 +144,15 @@ for service in conn.krpc.get_services().services:
 hpp_namespace = {'hash_include': '#include', 'services': services}
 template = Template(file='templates/krpci_hpp.tmpl', searchList=[hpp_namespace])
 hpp_file = str(template)
+if not os.path.exists('include'):
+    os.makedirs('include')
 with open(os.path.join('include', 'krpci.hpp'), 'w') as f:
     f.write(hpp_file)
 
 cpp_namespace = {'hash_include': '#include', 'services': services}
 template = Template(file='templates/krpci_cpp.tmpl', searchList=[cpp_namespace])
 cpp_file = str(template)
+if not os.path.exists('src'):
+    os.makedirs('src')
 with open(os.path.join('src', 'krpci_generated.cpp'), 'w') as f:
     f.write(cpp_file)
