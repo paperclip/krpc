@@ -1,0 +1,22 @@
+def options(opt):
+    opt.load('compiler_cxx boost')
+
+def configure(ctx):
+    ctx.load('compiler_cxx boost')
+    ctx.check_cfg(package='protobuf', args='--cflags --libs', uselib_store='PROTOBUF')
+    #ctx.check_boost(lib='system')
+    ctx.env.LIB_BOOST = ['boost_system', 'boost_thread']
+
+def build(ctx):
+    ctx.shlib(
+        target = 'krpci',
+        source = ['src/krpci_base.cpp', 'src/krpci_generated.cpp', 'src/kRPC/Schema/KRPC.pb.cc'],
+        includes = ['include', '.', 'src/kRPC/Schema'],
+        use = ['PROTOBUF', 'BOOST']
+    )
+    ctx.program(
+        target = 'krpci_test',
+        source = 'krpci_test.cpp',
+        use = ['krpci'],
+        includes = ['include', '.', 'src/kRPC/Schema']
+    )
