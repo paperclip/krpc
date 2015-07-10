@@ -21,6 +21,6 @@ test: gen
 		-lboost_system -lboost_thread `pkg-config --libs --cflags protobuf`
 
 clean:
-	rm -rf include src/krpci_generated.cpp src/kRPC templates/*.py templates/*.py templates/*.bak.py
+	rm -rf include src/krpci_generated.cpp src/kRPC
 	find . -name "*.pyc" -exec rm -rf {} \;
 
