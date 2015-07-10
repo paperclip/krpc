@@ -1,8 +1,0 @@
-build
-include
-src/krpci_generated.cpp
-src/kRPC
-templates/*.py
-templates/*.bak
-.lock*
-.waf*

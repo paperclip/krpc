@@ -193,8 +193,9 @@ protobuf-java: $(PROTOS) $(PROTOS:.proto=.java)
 	cp $(PROTOS:.proto=.java) java/krpc/
 
 protobuf-cpp: $(PROTOS) $(PROTOS:.proto=.pb.h) $(PROTOS:.proto=.pb.cc)
-	mkdir -p cpp/src/kRPC/Schema
-	cp $(PROTOS:.proto=.pb.h) $(PROTOS:.proto=.pb.cc) cpp/src/kRPC/Schema/
+	mkdir -p cpp/include
+	cp $(PROTOS:.proto=.pb.h) cpp/include/
+	sed 's/src\/kRPC\/Schema\/KRPC.pb.h/KRPC.pb.h/g' $(PROTOS:.proto=.pb.cc) > cpp/src/KRPC.pb.cc
 
 protobuf-lua: $(PROTOS) $(PROTOS_TEST) $(PROTOS:.proto=.lua) $(PROTOS_TEST:.proto=.lua)
 	mkdir -p lua/krpc/schema

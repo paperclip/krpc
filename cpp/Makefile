@@ -5,19 +5,14 @@ all: test
 protobuf:
 	make -C .. protobuf-cpp
 
-gen: protobuf
-	PYTHONPATH=../python ./krpci_generator.py
+generate: protobuf
+	PYTHONPATH=../python ./generate
 
-test: gen
-	g++ -o krpci_test \
-		src/krpci_test.cpp \
-		src/krpci_base.cpp \
-		src/krpci_generated.cpp \
-		src/kRPC/Schema/KRPC.pb.cc \
-		-Iinclude -I./ -Isrc/kRPC/Schema/ \
-		-lboost_system -lboost_thread `pkg-config --libs --cflags protobuf`
+test: generate
+	./waf configure build
 
 clean:
-	rm -rf include src/krpci_generated.cpp src/kRPC
+	./waf clean
+	rm -rf include/krpci.hpp include/KRPC.pb.h src/krpci_generated.cpp src/KRPC.pb.cc
 	find . -name "*.pyc" -exec rm -rf {} \;
 
