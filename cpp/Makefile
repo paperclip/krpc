@@ -12,7 +12,7 @@ test: generate
 	./waf configure build
 
 clean:
-	./waf clean
-	rm -rf include/krpci.hpp include/KRPC.pb.h src/krpci_generated.cpp src/KRPC.pb.cc
+	-./waf clean
+	rm -rf include/krpci.hpp include/KRPC.pb.h src/krpci.cpp src/KRPC.pb.cc
 	find . -name "*.pyc" -exec rm -rf {} \;
-
+	rm -rf build

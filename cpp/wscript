@@ -10,7 +10,7 @@ def configure(ctx):
 def build(ctx):
     ctx.shlib(
         target = 'krpci',
-        source = ['src/krpci_base.cpp', 'src/krpci_generated.cpp', 'src/KRPC.pb.cc'],
+        source = ['src/krpci_base.cpp', 'src/krpci.cpp', 'src/KRPC.pb.cc'],
         includes = ['include'],
         use = ['PROTOBUF', 'BOOST']
     )

@@ -128,7 +128,7 @@ java
 cpp/build
 cpp/include/krpci.hpp
 cpp/include/*.pb.h
-cpp/src/krpci_generated.cpp
+cpp/src/krpci.cpp
 cpp/src/*.pb.cc
 cpp/.waf*
 cpp/.lock*

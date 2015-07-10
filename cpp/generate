@@ -154,5 +154,5 @@ template = Template(file='templates/krpci_cpp.tmpl', searchList=[cpp_namespace])
 cpp_file = str(template)
 if not os.path.exists('src'):
     os.makedirs('src')
-with open(os.path.join('src', 'krpci_generated.cpp'), 'w') as f:
+with open(os.path.join('src', 'krpci.cpp'), 'w') as f:
     f.write(cpp_file)
