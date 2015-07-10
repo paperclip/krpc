@@ -125,7 +125,7 @@ python/build
 java
 
 # C++
-cpp
+#cpp
 
 # protobuf
 *.protobin
