@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 namespace KRPCSpaceCenter.ExtensionMethods
@@ -58,6 +59,51 @@ namespace KRPCSpaceCenter.ExtensionMethods
         public static float DryMass (this Part part)
         {
             return part.mass * 1000;
+        }
+
+        /// <summary>
+        /// Return all parts from which fuel can flow to the given root part
+        /// </summary>
+        public static IEnumerable<Part> FuelFlowConnectedParts (this Part root)
+        {
+            var visited = new HashSet<Part> ();
+            var parts = new Stack<Part> ();
+            parts.Push (root);
+
+            //FIXME: hack...
+            if (root.parent != null)
+                parts.Push (root.parent);
+
+            while (parts.Count > 0) {
+                var part = parts.Pop ();
+
+                // See http://forum.kerbalspaceprogram.com/threads/64362
+                // Rule #1
+                if (visited.Contains (part))
+                    continue;
+                visited.Add (part);
+
+                yield return part;
+
+                // Rule #2 - parts connected by fuel lines
+                foreach (var fuelLine in part.fuelLookupTargets)
+                    parts.Push (fuelLine.parent);
+
+                // Rule #4 - axially attached parents and children
+                if (part.fuelCrossFeed) {
+                    if (part.parent != null && part.attachMode == AttachModes.STACK)
+                        parts.Push (part.parent);
+                    foreach (var child in part.children) {
+                        if (child.attachMode == AttachModes.STACK) {
+                            parts.Push (child);
+                        }
+                    }
+                }
+
+                // Rule #7 - part is radially attached to parent and is crossfeed capable
+                //if (part.fuelCrossFeed && part.parent != null && part.attachMode == AttachModes.SRF_ATTACH)
+                //    parts.Push (part.parent);
+            }
         }
     }
 }

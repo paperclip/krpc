@@ -81,6 +81,11 @@ namespace KRPCSpaceCenter.Services.Parts
         }
 
         [KRPCProperty]
+        public IList<Part> FuelFlowConnectedParts {
+            get { return part.FuelFlowConnectedParts ().Select (x => new Part (x)).ToList (); }
+        }
+
+        [KRPCProperty]
         public int Stage {
             get { return part.hasStagingIcon ? part.inverseStage : -1; }
         }
