@@ -1,3 +1,6 @@
+top = '.'
+out = 'build'
+
 def options(opt):
     opt.load('compiler_cxx boost')
 
@@ -7,16 +10,23 @@ def configure(ctx):
     #ctx.check_boost(lib='system')
     ctx.env.LIB_BOOST = ['boost_system', 'boost_thread']
 
+def post(ctx):
+    if ctx.cmd == 'install':
+        ctx.exec_command('/sbin/ldconfig')
+
 def build(ctx):
+    ctx.add_post_fun(post)
     ctx.shlib(
         target = 'krpci',
         source = ['src/krpci_base.cpp', 'src/krpci.cpp', 'src/KRPC.pb.cc'],
         includes = ['include'],
         use = ['PROTOBUF', 'BOOST']
     )
+    ctx.install_files('${PREFIX}/include', ['include/krpci.hpp', 'include/KRPC.pb.h'])
     ctx.program(
         target = 'krpci_test',
         source = 'krpci_test.cpp',
         use = ['krpci'],
-        includes = ['include']
+        includes = ['include'],
+        install_path = None
     )

@@ -1,6 +1,6 @@
-.PHONY: all protobuf gen test clean
+.PHONY: all protobuf generate build install clean
 
-all: test
+all: build
 
 protobuf:
 	make -C .. protobuf-cpp
@@ -8,8 +8,11 @@ protobuf:
 generate: protobuf
 	PYTHONPATH=../python ./generate
 
-test: generate
+build: generate
 	./waf configure build
+
+install:
+	./waf install
 
 clean:
 	-./waf clean
