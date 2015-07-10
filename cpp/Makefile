@@ -7,9 +7,6 @@ protobuf:
 
 gen: protobuf
 	PYTHONPATH=../python ./krpci_generator.py
-	mkdir -p include
-	mv krpci.hpp include/
-	mv krpci_generated.cpp src/
 
 test: gen
 	g++ -o krpci_test \
