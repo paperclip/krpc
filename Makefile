@@ -107,6 +107,7 @@ clean: protobuf-clean
 	-rm -f KSP.log TestResult.xml
 	make -C python clean
 	make -C lua clean
+	make -C cpp clean
 	make -C doc clean
 
 dist-clean: clean
@@ -216,7 +217,6 @@ protobuf-java-clean:
 	rm -rf $(PROTOS:.proto=.java)
 
 protobuf-cpp-clean:
-	rm -rf cpp
 	rm -rf $(PROTOS:.proto=.pb.h) $(PROTOS:.proto=.pb.cc)
 
 protobuf-lua-clean:
