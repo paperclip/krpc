@@ -1,0 +1,33 @@
+
+.. default-domain:: lua
+.. currentmodule:: SpaceCenter
+
+Geometry Types
+==============
+
+.. class:: Vector3
+
+   3-dimensional vectors are represented as a 3-tuple. For example:
+
+
+   .. code-block:: lua
+
+      local krpc = require 'krpc.init'
+      local conn = krpc.connect()
+      local v = conn.space_center.active_vessel:flight().prograde
+      print(v[1], v[2], v[3])
+
+
+.. class:: Quaternion
+
+   Quaternions (rotations in 3-dimensional space) are encoded as a 4-tuple
+   containing the x, y, z and w components. For example:
+
+
+   .. code-block:: lua
+
+      local krpc = require 'krpc.init'
+      local conn = krpc.connect()
+      local q = conn.space_center.active_vessel:flight().rotation
+      print(q[1], q[2], q[3], q[4])
+
